@@ -7,12 +7,16 @@
 
 ## コンテナ起動方法
 まずDockerコンテナを立てます
-'''bash
+```bash
 docker compose up -d
-'''
+```
 次にコンテナを起動します
-'''bash
+```bash
 docker compose exec test_docker /bin/bash
-'''
-
+```
+そこで試しに
+```bash
+ros2 run tb3_vision smile_cascade_node
+```
+とすると、写真が表示されます。（写真ファイルをコンテナにマウントさせると可）
 > 4月14日更新
