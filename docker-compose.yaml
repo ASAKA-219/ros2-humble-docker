@@ -1,0 +1,30 @@
+services:
+  test_humble:
+    container_name: humble-test
+    image: humble:test
+    privileged: true
+    build:
+      context: .
+      args:
+        - USER_NAME=${USER_NAME}
+        - GROUP_NAME=${GROUP_NAME}
+        - UID=${UID}
+        - GID=${GID}
+    environment:
+      - DISPLAY=${DISPLAY}
+      - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
+      #- PULSE_SERVER=unix:/tmp/pulseaudio.socket
+      #- PULSE_COOKIE=/tmp/pulseaudio.cookie
+    volumes:
+       - /tmp/.X11-unix:/tmp/.X11-unix
+       - $HOME/.Xauthority/:/root/.Xauthority
+       - /dev:/dev
+       - ./tb3_vision:/home/${USER_NAME}/catkin_ws/src/tb3_vision
+    devices:
+       - /dev:/dev
+    ipc: host
+    network_mode: host
+    tty: true
+    stdin_open: true
+    user: "${UID}:${GID}"
+    command: /bin/bash
