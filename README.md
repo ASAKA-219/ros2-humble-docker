@@ -1,18 +1,26 @@
 #  Docker container for ROS 2 humble Hawkisible
-## これは何？
 皆さんご存知のROS 2 humble環境をDockerコンテナで持ち運べるリポジトリになります。提供パッケージ(tb3_vision)はOpenCVを使って遊べます。
 ### セットアップ
 - docker
 - docker-compose
+- 画像ファイルをコンテナにマウントする
+
+### 画像のマウント方法
+1. 画像ファイルを入れた `image` ディレクトリをこのディレクトリ直下に用意する。
+2. docker-compose.yamlを編集し、`volumes`タグの中にディレクトリを追加する。
+   ```yaml
+   volumes:
+     - ./image:/home/${USER_NAME}/image
+   ```
 
 ## コンテナ起動方法
-まずDockerコンテナを立てます
+シェルスクリプトから起動できます。
 ```bash
-docker compose up -d
+./entry_exec.sh
 ```
-次にコンテナを起動します
+Nvidia製GPUドライバー付きのパソコンの場合は、-gpuオプションを付けてください。
 ```bash
-docker compose exec test_docker /bin/bash
+./entry_exec.sh -gpu
 ```
 そこで試しに
 ```bash
