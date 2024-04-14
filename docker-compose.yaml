@@ -19,7 +19,6 @@ services:
        - /tmp/.X11-unix:/tmp/.X11-unix
        - $HOME/.Xauthority/:/root/.Xauthority
        - /dev:/dev
-       - ./tb3_vision:/home/${USER_NAME}/catkin_ws/src/tb3_vision
     devices:
        - /dev:/dev
     ipc: host
