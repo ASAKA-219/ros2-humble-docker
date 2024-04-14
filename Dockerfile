@@ -53,7 +53,6 @@ RUN echo "PS1='\[\033[44;37m\]Docker\[\033[0m\]@\[\033[32m\]\u\[\033[0m\]:\[\033
 RUN mkdir -p catkin_ws/src &&\
     cd catkin_ws/src &&\
     git clone https://gitlab.com/nakatogawalabolatory/ros/ros_practice.git &&\
-#COPY tb3_vision /home/${USER_NAME}/catkin_ws/src/tb3_vision
     cd /home/${USER_NAME}/catkin_ws &&\
     rosdep update &&\
     rosdep install -y -i --rosdistro humble --from-paths src &&\
