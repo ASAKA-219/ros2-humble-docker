@@ -1,4 +1,4 @@
-#  Docker container for ROS 2 humble Hawkisible
+#  Docker container for ROS 2 humble Hawksbill
 皆さんご存知のROS 2 humble環境をDockerコンテナで持ち運べるリポジトリになります。提供パッケージ(ros_practice)はROS 2プログラミングを練習できます。
 ### セットアップ
 - docker
