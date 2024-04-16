@@ -24,8 +24,9 @@ RUN apt update && apt upgrade -y\
 #ROS2 install
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg &&\
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null &&\
-    apt update && apt upgrade -y && apt install -y ros-humble-desktop &&\
-    apt update && DEBIAN_FRONTEND=noninteractive apt install -y\
+    apt update && apt upgrade -y && apt install -y ros-humble-desktop
+    
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y\
     python3-colcon-common-extensions python3-rosdep &&\
     source /opt/ros/humble/setup.bash &&\
     rosdep init
@@ -50,10 +51,9 @@ USER $USER_NAME
 RUN echo "PS1='\[\033[44;37m\]Docker\[\033[0m\]@\[\033[32m\]\u\[\033[0m\]:\[\033[1;33m\]\w\[\033[0m\]\$ '" >> /home/${USER_NAME}/.bashrc
 
 #ROS2 workspace作成
-RUN mkdir -p catkin_ws/src &&\
-    cd catkin_ws/src &&\
-    git clone https://gitlab.com/nakatogawalabolatory/ros/ros_practice.git &&\
-    cd /home/${USER_NAME}/catkin_ws &&\
+RUN mkdir -p catkin_ws/src
+COPY tb3_vision /home/${USER_NAME}/catkin_ws/src/tb3_vision
+RUN cd catkin_ws &&\
     rosdep update &&\
     rosdep install -y -i --rosdistro humble --from-paths src &&\
     colcon build && echo "source ~/catkin_ws/install/setup.bash" >> /home/${USER_NAME}/.bashrc
