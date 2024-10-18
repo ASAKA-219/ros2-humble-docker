@@ -5,6 +5,7 @@ services:
     privileged: true
     build:
       context: .
+      dockerfile: Dockerfile.cpu
       args:
         - USER_NAME=${USER_NAME}
         - GROUP_NAME=${GROUP_NAME}
@@ -13,8 +14,9 @@ services:
     environment:
       - DISPLAY=${DISPLAY}
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
-      #- PULSE_SERVER=unix:/tmp/pulseaudio.socket
-      #- PULSE_COOKIE=/tmp/pulseaudio.cookie
+      - PULSE_SERVER=unix:/tmp/pulseaudio.socket
+      - PULSE_COOKIE=/tmp/pulseaudio.cookie
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
     volumes:
        - /tmp/.X11-unix:/tmp/.X11-unix
        - $HOME/.Xauthority/:/root/.Xauthority
@@ -34,6 +36,7 @@ services:
     privileged: true
     build:
       context: .
+      dockerfile: Dockerfile.gpu
       args:
         - USER_NAME=${USER_NAME}
         - GROUP_NAME=${GROUP_NAME}
@@ -42,13 +45,14 @@ services:
     environment:
       - DISPLAY=${DISPLAY}
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
-      #- PULSE_SERVER=unix:/tmp/pulseaudio.socket
-      #- PULSE_COOKIE=/tmp/pulseaudio.cookie
+      - PULSE_SERVER=unix:/tmp/pulseaudio.socket
+      - PULSE_COOKIE=/tmp/pulseaudio.cookie
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
     volumes:
        - /tmp/.X11-unix:/tmp/.X11-unix
        - $HOME/.Xauthority/:/root/.Xauthority
        - /dev:/dev
-       - ./tb3_vision:/home/${USER_NAME}/catkin_ws/src/tb3_vision
+       #- ./tb3_vision:/home/${USER_NAME}/catkin_ws/src/tb3_vision
     devices:
        - /dev:/dev
     deploy:

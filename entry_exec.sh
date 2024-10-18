@@ -9,7 +9,7 @@ if [[ $option == "-gpu" ]]; then
     container="${container}-gpu"
     image_name="${image_name}:gpu"
 else
-    image_name="humble:cpu"
+    image_name="${image_name}:cpu"
 fi
 
 image_exists=$(docker images -q "${image_name}")
@@ -18,7 +18,7 @@ image_exists=$(docker images -q "${image_name}")
 if [ -n "$image_exists" ]; then
   # イメージが存在する場合の処理
   echo "イメージ"${image_name}"を見つけたよ！"${image_name}"を実行するね！"
-  #docker compose up -d $container
+  docker compose up -d $container
 else
   # イメージが存在しない場合の処理
   echo "イメージ" ${image_name} "は見つかりませんでした。別の方法でコンテナを起動するよ！"
