@@ -1,5 +1,5 @@
 #base image-----------------------------------------------------------------
-FROM ubuntu:22.04 AS base
+FROM --platform=linux/amd64 ubuntu:22.04 AS base
 LABEL maintainer="Yusuke Asaka <oganesson@gmail.com>"
 LABEL ASAKA-219.vendor="Yusuke Asaka"\
       ASAKA-219.version="2.0.0"\
@@ -24,7 +24,7 @@ ENV TZ=Asia/Tokyo
 RUN apt update && apt upgrade -y\
     && DEBIAN_FRONTEND=noninteractive apt install -y curl vim git wget htop \
     python3.10-dev python-is-python3 python3-pip sudo \
-    gnupg gnupg2 lsb-release nano pulseaudio
+    gnupg gnupg2 lsb-release pulseaudio
 
 #--------------------------------------------------------------------------
 FROM base AS install_from_git
@@ -82,12 +82,15 @@ RUN . /opt/ros/humble/setup.bash &&\
     sudo apt install -y ros-humble-cartographer ros-humble-cartographer-ros \
     ros-humble-navigation2 ros-humble-nav2-bringup ros-humble-dynamixel-sdk \
     ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-gripper-controllers \
-    ros-humble-moveit ros-humble-moveit-servo ros-humble-gazebo-* ros-humble-turtlebot3* \
-    ros-humble-realsense2-camera-msgs ros-humble-realsense2-description &&\
+    ros-humble-moveit ros-humble-gazebo* ros-humble-moveit-servo ros-humble-turtlebot3* \
+    ros-humble-realsense2-camera-msgs ros-humble-realsense2-description 
     #rosdep update &&\
     #rosdep install -y -i --rosdistro humble --from-paths /home/${USER_NAME}/catkin_ws/src &&\
+    
+RUN . /opt/ros/humble/setup.bash && sudo apt install -y ros-humble-gazebo* &&\
     colcon build --symlink-install && . install/setup.bash &&\
     echo "source /opt/ros/humble/setup.bash" >> /home/${USER_NAME}/.bashrc &&\
+    echo "source /usr/share/gazebo/setup.sh" >> /home/${USER_NAME}/.bashrc &&\
     echo 'export ROS_DOMAIN_ID=7' >> /home/${USER_NAME}/.bashrc &&\
     echo "source ~/catkin_ws/install/setup.bash" >> /home/${USER_NAME}/.bashrc && . /home/${USER_NAME}/.bashrc &&\
 #PS1
@@ -96,6 +99,8 @@ RUN . /opt/ros/humble/setup.bash &&\
 #tempに実行ファイル追加
 COPY assets/setup.sh /tmp/entry_point.sh
 COPY assets/nanorc /home/${USER_NAME}/.nanorc
-RUN sudo chmod +x /tmp/entry_point.sh
+COPY vnc_setup.sh /home/${USER_NAME}/vnc_setup.sh
+RUN sudo chmod +x /tmp/entry_point.sh &&\
+    sudo apt update && sudo apt install -y nano tightvncserver websockify novnc lxde
 ENTRYPOINT ["/tmp/entry_point.sh"]
 #setup.shで毎回source /opt/ros/humble/setup.bashしている

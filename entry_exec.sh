@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#pulseaudioサーバーをデーモンで起動
+pulseaudio --load=module-native-protocol-tcp --exit-idle-time=-1 --daemon
+
 # イメージが存在するかどうかを確認
 image_name="humble"
 container="humble-test"
@@ -25,3 +28,4 @@ else
   docker compose up -d --build $container
 fi
 docker compose exec $container /bin/bash
+pulseaudio --kill

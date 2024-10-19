@@ -2,6 +2,7 @@ services:
   humble-test:
     container_name: humble-test
     image: humble:cpu
+    platform: linux/amd64
     privileged: true
     build:
       context: .
@@ -12,14 +13,19 @@ services:
         - UID=${UID}
         - GID=${GID}
     environment:
-      - DISPLAY=${DISPLAY}
-      - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
-      - PULSE_SERVER=unix:/tmp/pulseaudio.socket
-      - PULSE_COOKIE=/tmp/pulseaudio.cookie
+      - DISPLAY=host.docker.internal:0
+      - PULSE_SERVER=docker.for.mac.localhost
       - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+    ports:
+      - "8888:8888"
+      - "8080:8080" # Web VNC
+      - "5901:5901" # VNC
     volumes:
        - /tmp/.X11-unix:/tmp/.X11-unix
        - $HOME/.Xauthority/:/root/.Xauthority
+       - type: bind
+         source: ~/.config/pulse
+         target: /root/.config/pulse
        - /dev:/dev
     devices:
        - /dev:/dev
@@ -45,14 +51,15 @@ services:
     environment:
       - DISPLAY=${DISPLAY}
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
-      - PULSE_SERVER=unix:/tmp/pulseaudio.socket
-      - PULSE_COOKIE=/tmp/pulseaudio.cookie
+      - PULSE_SERVER=docker.for.mac.localhost
       - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
     volumes:
        - /tmp/.X11-unix:/tmp/.X11-unix
        - $HOME/.Xauthority/:/root/.Xauthority
+       - type: bind
+         source: ~/.config/pulse
+         target: /root/.config/pulse
        - /dev:/dev
-       #- ./tb3_vision:/home/${USER_NAME}/catkin_ws/src/tb3_vision
     devices:
        - /dev:/dev
     deploy:
