@@ -3,8 +3,10 @@
 皆さんご存知のROS 2 humble環境をDockerコンテナで持ち運べるリポジトリになります。提供パッケージ(ros_practice)はROS 2プログラミングを練習できます。
 
 :::note warn
+
 このブランチはMac OS用のROS コンテナです。Ubuntuで使用される場合は
 masterブランチをご覧ください。
+
 :::
 
 ### セットアップ
