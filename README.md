@@ -1,11 +1,9 @@
 #  Docker container for ROS 2 humble Hawksbill
 ## これは何？
 皆さんご存知のROS 2 humble環境をDockerコンテナで持ち運べるリポジトリになります。提供パッケージ(ros_practice)はROS 2プログラミングを練習できます。
-
 :::note warn
-  このブランチはMac OS用のROS コンテナです。Ubuntuで使用される場合はmasterブランチをご覧ください。
+このブランチはMac OS用のROS コンテナです。Ubuntuで使用される場合はmasterブランチをご覧ください。
 :::
-
 ### セットアップ
 - docker
 - docker-compose
